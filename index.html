@@ -607,10 +607,10 @@
 
             <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
               <form
-                action="./contact.php"
-                method="post"
+                id="contact-form"
                 role="form"
                 class="php-email-form"
+                method="POST"
               >
                 <div class="row">
                   <div class="form-group col-md-6">
@@ -694,7 +694,36 @@
     <script src="assets/vendor/typed.js/typed.min.js"></script>
     <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
     <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      const form = document.getElementById("contact-form");
 
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const subject = document.getElementById("subject").value;
+        const message = document.getElementById("message").value;
+
+        axios
+          .post("https://formspree.io/f/xbjewpwl", {
+            name: name,
+            subject: subject,
+            _replyto: email,
+            message: message,
+          })
+          .then((response) => {
+            alert("Thank you for your message!");
+            form.reset();
+          })
+          .catch((error) => {
+            alert(
+              "Sorry, there was an error sending your message. Please try again later."
+            );
+          });
+      });
+    </script>
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
   </body>
